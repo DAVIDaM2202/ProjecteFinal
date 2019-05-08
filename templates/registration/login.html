@@ -1,4 +1,6 @@
-<html lang="en"><head>
+{% extends 'base.html' %} {% block content %} {% load crispy_forms_tags %}
+<html lang="en">
+<head>
     <meta charset="UTF-8">
     <title>Title</title>
 </head>
@@ -8,23 +10,23 @@
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
 
 <body>
-
-
-<form method="post" action="/accounts/login/">
-<input type="hidden" name="csrfmiddlewaretoken" value="2zpdgY0IRuN64c3BuTUsa07EawhZeodBl9y5Byx31OukQD8n8x6kF40kMHnZbbRb">
-<div>
-    <label style="color:red" for="id_username">Username:</label>
-    <input type="text" name="username" autofocus="" required="" id="id_username" maxlength="254">
-</div>
-<div>
-    <label for="id_password">Password:</label>
-    <input type="password" name="password" required="" id="id_password">
-</div>
-<div>
-<input type="submit" value="login">
-<input type="hidden" name="next" value="">
-</div>
-</form>
-
-<p><a href="/accounts/password_reset/">Lost password?</a></p>
-</body></html>
+    <form method="post" action="/accounts/login/">
+        {% csrf_token %}
+        <div>
+            <label style="color:red" for="id_username">Username:</label>
+            <input type="text" name="username" autofocus="" required="" id="id_username" maxlength="254">
+        </div>
+        <div>
+            <label for="id_password">Password:</label>
+            <input type="password" name="password" required="" id="id_password">
+        </div>
+        <div>
+            <input type="submit" value="login">
+            <input type="hidden" name="next" value="">
+        </div>
+    </form>
+    <p><a href="/accounts/password_reset/">Lost password?</a></p>
+    <h1 class="color">David</h1>
+</body>
+</html>
+{% endblock %}

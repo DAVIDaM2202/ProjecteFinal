@@ -8,6 +8,7 @@ from django.conf.urls.static import static
 app_name = 'activitats'
 urlpatterns = [
     url(r'^$', views.index, name='index'),
-    url(r'ensenyar/$', views.ensenyar, name='ensenyar'),
+    url(r'registre/$', views.registre, name='registre'),
+    url(r'pantallaInici/$', views.pantallaInici, name='pantallaInici'),
 
 ]

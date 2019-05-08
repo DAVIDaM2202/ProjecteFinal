@@ -1,0 +1,15 @@
+{% load crispy_forms_tags %}
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<h1>Pantalla Usuari</h1>
+<h1>{{ user.get_username}}</h1>
+ <a href="{% url 'logout' %}"><i class="fas fa-sign-out-alt"></i> Sortir</a>
+</body>
+</html>
