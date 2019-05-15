@@ -1,0 +1,16 @@
+{% extends 'base.html' %} {% block content %}
+    <h1> Les meves activitats</h1>
+    <div class="row">
+    {% for x in activtats %}
+      <div class=" card col-sm-5 mr-auto ml-auto m-5 segon2">
+          <h5 class="card-header">{{ x.categoria }}</h5>
+          <div class="card-body tercer2">
+              <h5 class="card-title">{{ x.nom }}</h5>
+              <p class="card-text">{{ x.localitat.latitud }}</p>
+               <td ><a  class="btn btn-primary" href="{% url 'activitats:activitatDetallada' x.id %}">Més info</a></td>
+
+          </div>
+      </div>
+    {% endfor %}
+    </div>
+{% endblock %}

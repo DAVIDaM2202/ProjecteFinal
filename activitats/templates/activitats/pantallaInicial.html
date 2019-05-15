@@ -1,15 +1,102 @@
+{% extends 'base.html' %}
+{% block content %}
 {% load crispy_forms_tags %}
-
 <!DOCTYPE html>
 <html lang="en">
+    <script src="https://code.jquery.com/jquery-3.4.1.js"></script>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.15.1/moment.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datetimepicker/4.17.47/js/bootstrap-datetimepicker.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datetimepicker/4.17.47/css/bootstrap-datetimepicker.min.css">
+    <!---Select 2-->
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.6-rc.0/js/select2.min.js"></script>
+        <link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.6-rc.0/css/select2.min.css" rel="stylesheet" />
 
 <head>
     <meta charset="UTF-8">
     <title>Title</title>
 </head>
 <body>
-<h1>Pantalla Usuari</h1>
-<h1>{{ user.get_username}}</h1>
- <a href="{% url 'logout' %}"><i class="fas fa-sign-out-alt"></i> Sortir</a>
+
+<h1>Benvingut {{ user.get_username}}</h1><!--<h1>{{ user.id}}</h1>
+-->
+<a href="{% url 'logout' %}"><i class="fas fa-sign-out-alt"></i> Sortir</a>
+<a id="nova" type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal">
+Crear Activitat</a>
+
+<!-- Modal -->
+<div class="modal fade" id="exampleModal"  role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Crear una Activitat</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+<form method="POST">
+    {% csrf_token %}
+    {{ form|crispy }}
+    <input type="submit" class="btn btn-success">
+</form>
+    </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+      </div>
+    </div>
+  </div>
+</div>
+                <td ><a href="{% url 'activitats:activitatsPropies' %}">Les meves Activitats</a></td>
+<div class=" row general">
+</div>
+
+<script>
+$( document ).ready(function() {
+$(document).off('focusin.modal');
+
+
+ $.get("/ensenyar",function (data) {
+     var c =0;
+                 console.log(data)
+
+        $.each(data, function (index, element) {
+        /*$(".general").prepend("<div class='col-sm-5 mr-auto ml-auto m-5 segon"+c+"'>");
+        $(".segon"+c).prepend("<div class='card tercer"+c+"'>");
+        $(".tercer"+c).prepend("<div class='card-body quart"+c+"'>");
+        $(".quart"+c).prepend("<a href='#' class='btn btn-primary'>Mes informacio</a>");
+        $(".quart"+c).prepend("<p class='card-text'>"+element.descripcio+"</p>");
+        $(".quart"+c).prepend("<h5 class='card-title'>"+element.nom+"</h5>");*/
+        $(".general").prepend("<div class=' card col-sm-5 mr-auto ml-auto m-5 segon"+c+"'>");
+        $(".segon"+c).prepend("<div class='card-body tercer"+c+"'>");
+        $(".tercer"+c).prepend("<a href='activitatDetallada/"+element.id+"' class='btn btn-primary'>Mes informacio</a>");
+        $(".tercer"+c).prepend("<p class='card-text'>"+element.descripcio+"</p>");
+        $(".tercer"+c).prepend("<h5 class='card-title'>"+element.nom+"</h5>");
+        $(".segon"+c).prepend("<h5 class='card-header'>"+element.categoria);
+
+
+c++;
+        })
+        })});
+$('.localitat').select2({
+            ajax: {
+                url: function (params) {
+                    return 'activitats/api_Localitats';
+                },
+                dataType: 'json'
+            }
+        });
+
+ $(".localitat").select2({
+    dropdownParent: $("#exampleModal")
+  });
+
+</script>
+
 </body>
 </html>
+
+{% endblock %}

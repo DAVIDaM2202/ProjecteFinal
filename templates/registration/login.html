@@ -10,23 +10,46 @@
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
 
 <body>
-    <form method="post" action="/accounts/login/">
-        {% csrf_token %}
-        <div>
-            <label style="color:red" for="id_username">Username:</label>
-            <input type="text" name="username" autofocus="" required="" id="id_username" maxlength="254">
+
+    <div class="container col-lg-4 col-12 my-auto pb-5" style=" margin: 0;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  -ms-transform: translate(-50%, -50%);
+  transform: translate(-50%, -50%);" >
+        <div class="row">
+            <div class="col-12 mx-auto">
+                <div class="card card-signin">
+                    <h5 class="card-header info-color white-text text-center py-4">
+                    <strong>Login</strong>
+                    </h5>
+                    <div class="card-body px-lg-5">
+                        <form method="post" action="/accounts/login/" class="text-center" style="color: #757575;">
+                            {% csrf_token %}
+
+                            <p >Benvingut!</p>
+                            <!-- Usuari -->
+                            <div class="md-form mt-3">
+                                <label for="id_username"></label>
+                                <input placeholder="Usuari" type="text" name="username" value="david" id="id_username" required="" class="form-control">
+                            </div>
+                            <!-- Contrasenya -->
+                            <div class="md-form">
+                                <label for="id_password"></label>
+                                <input placeholder="Contrasenya" type="password" name="password" value="david22" required="" id="id_password" class="form-control">
+                            </div>
+                            {% if form.errors %}
+                            <p style="padding: 10px; color: red">*Usuari o contrasenya incorrectes.</p>
+                            {% endif %}
+                            <button class="btn btn-outline-info btn-rounded btn-block z-depth-0 my-4 waves-effect" type="submit">Sign in</button>
+                            <p><a href="/accounts/password_reset/">Lost password? </a><a href="{% url 'activitats:registre' %}"> Registrar-se</a></p>
+                        </form>
+                    </div>
+                </div>
+            </div>
         </div>
-        <div>
-            <label for="id_password">Password:</label>
-            <input type="password" name="password" required="" id="id_password">
-        </div>
-        <div>
-            <input type="submit" value="login">
-            <input type="hidden" name="next" value="">
-        </div>
-    </form>
-    <p><a href="/accounts/password_reset/">Lost password?</a></p>
-    <h1 class="color">David</h1>
+    </div>
 </body>
+
 </html>
 {% endblock %}

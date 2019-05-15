@@ -1,11 +1,69 @@
-{% extends 'base.html' %}
-{% block content %}
-{% load crispy_forms_tags %}
+{% extends 'base.html' %} {% block content %} {% load crispy_forms_tags %}
 
-<form method="POST">
-    {% csrf_token %}
-    {{ form|crispy }}
-    <input type="submit" class="btn btn-success">
-</form>
+<div class="login container col-lg-8 col-12 my-auto pb-5" style=" margin: 0;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  -ms-transform: translate(-50%, -50%);
+  transform: translate(-50%, -50%);">
+    <div class="row">
+        <div class="col-12 mx-auto">
+            <div class="card card-signin">
+                <h5 class="card-header info-color white-text text-center py-4">
+                    <strong>Login</strong>
+                    </h5>
+                <div class="card-body px-lg-4">
+                    <form method="POST">
+                        {% csrf_token %}
+                        <!--Primer-->
+                        <div class="row col-12">
+                            <div id="div_id_nom " class="form-group col-lg-6 ">
+                                <div class="">
+                                    <input type="text" placeholder="Nom" value="david" name="nom" id="id_nom" required="" class="textinput textInput form-control requiredField" maxlength="100"> </div>
+                            </div>
+                            <div id="div_id_cognom" class="form-group col-lg-6 ">
+                                <div class="">
+                                    <input type="text" placeholder="Cognom" value="ayachi" name="cognom" id="id_cognom" required="" class="textinput textInput form-control requiredField" maxlength="100"> </div>
+                            </div>
+                        </div>
+                        <!--Segon-->
+                        <div class="row col-12">
+
+                            <div id="div_id_correu" class="form-group col-lg-6 ">
+                                <div class="">
+                                    <input type="email" placeholder="Correu" value="david@gmail.com" name="correu" id="id_correu" required="" class="emailinput form-control requiredField" maxlength="100"> </div>
+                            </div>
+                        </div>
+                        <!--tercer-->
+                        <div class="row col-12">
+
+                            <div id="div_id_nom_usuari" class="form-group col-lg-6 ">
+                                <div class="">
+                                    <input type="text" name="nom_usuari" value="david" placeholder="Nom d'usuari" required="" class="textinput textInput form-control requiredField" id="id_nom_usuari"> </div>
+                            </div>
+                        </div>
+                        <!--Quart-->
+                        <div class="row col-12">
+
+                            <div id="div_id_contrasenya1" class="form-group col-lg-6 ">
+                                <div class="">
+                                    <input type="password" placeholder="Contrasenya" value="david22" name="contrasenya1" required="" class="textinput textInput form-control requiredField" id="id_contrasenya1"> </div>
+                            </div>
+                            <div id="div_id_contrasenya2" class="form-group col-lg-6 ">
+                                <div class="">
+                                    <input type="password" placeholder="Repetir Contrasenya" value="david22" name="contrasenya2" required="" class="textinput textInput form-control requiredField" id="id_contrasenya2"> </div>
+                            </div>
+                        </div>
+                    {{ form.non_field_errors }}
+
+                        <div class="row col-12">
+                            <input type="submit" class="btn btn-success">
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
 
 {% endblock %}
