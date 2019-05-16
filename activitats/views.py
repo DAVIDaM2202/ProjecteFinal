@@ -14,7 +14,7 @@ from django.shortcuts import render, get_object_or_404
 from activitats.forms import registrePersona, User, formActivitats
 from activitats.models import Persona
 from django.urls import reverse
-from activitats.models import Activitat,Localitat
+from activitats.models import Activitat,Localitat,activitat_persones_inscrites
 
 def index(request):
     return render(request,'activitats/index.html')
@@ -87,9 +87,18 @@ def registre(request):
 
 
 
-'''def ensenyar (request):
-    print("hola")
-    return render(request,'activitats/pantallaInicial.html')'''
+def inscriures (request):
+    personaobject= Persona.objects.get(user=request.user)
+    activitatobject= Activitat.objects.get(pk= request.POST.get('activitat'))
+    activitats_inscrits= activitat_persones_inscrites.objects.filter(persona=personaobject,activitat=activitatobject,assistira='1').count()
+    if (activitats_inscrits == 0):
+        x = activitat_persones_inscrites.objects.create(persona=personaobject,activitat=activitatobject,assistira='1')
+        x.save()
+        print 'incrit'
+    else:
+        activitat_persones_inscrites.objects.get(persona=personaobject, activitat=activitatobject, assistira='1').delete()
+        print 'desinscrit'
+    return render(request,'activitats/informacioActivitats.html' )
 
 
 def ensenyar(request):
@@ -132,4 +141,19 @@ def apiLocalitats(request):
 
 def activitatDetallada(request, id_activitat):
     activitat=get_object_or_404(Activitat,pk=id_activitat)
+    personaobject = Persona.objects.get(user=request.user)
+    activitatobject = Activitat.objects.get(pk=id_activitat)
+    activitats_inscrits = activitat_persones_inscrites.objects.filter(persona=personaobject,activitat=activitatobject,assistira='1').count()
+    if (activitats_inscrits > 0):
+        text = '1'
+        context = {
+            "activitat":activitat,
+            "jaestasinscrit": text,
+        }
+        return render(request, 'activitats/informacioActivitats.html', context)
+    text = '0'
+    context = {
+        "activitat": activitat,
+        "jaestasinscrit": text,
+    }
     return render(request, 'activitats/informacioActivitats.html',{'activitat':activitat})

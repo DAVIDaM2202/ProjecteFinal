@@ -24,7 +24,7 @@ class Categoria(models.Model):
 
 class Activitat(models.Model):
     nom = models.CharField(max_length=50, blank=False, default='', verbose_name="Nom")
-    descripcio = models.CharField(max_length=250, blank=False, default='', verbose_name="Descripcio")
+    descripcio = models.TextField(max_length=500, blank=False, default='', verbose_name="Descripcio")
     dia = models.DateTimeField(max_length=100,verbose_name="Inici")
     #imatge = models.ImageField(upload_to='activitats/')
     diafinal = models.DateTimeField(max_length=100,verbose_name="Final")
@@ -43,3 +43,4 @@ class activitat_persones_inscrites(models.Model):
         unique_together = (("persona", "activitat"),)
     def __str__(self):
             return '{0} esta inscrit a la activitat {1}'.format(self.persona.nom,self.activitat.nom)
+    #resize: none;

@@ -2,10 +2,13 @@
 
 {% extends 'base.html' %} {% block content %}
 
-    <h1> Informacio de aquest activitat</h1>
-    <div class="row">
+
+    <div class="row col-12 mt-5">
 
 <div class="klk col-md-6">
+     <h1> Informacio de aquest activitat</h1>
+
+    <button id="clic" type="submit" class="btn"></button>
     <h4>Nom:  {{ activitat.nom }}</h4>
        <h4>Descripció: {{ activitat.descripcio }}</h4>
        <h4>Dia:  {{ activitat.dia }}</h4>
@@ -29,6 +32,59 @@
   var mymap=0;
 var marcadores=[];
 $(document).ready(function(){
+
+    var creador= "{{ activitat.creador }}";
+    var userlogin= "{{ user.get_username }}";
+if (creador !== userlogin){
+   $('#incriurte').attr('href','inscriures')
+    $('#incriurte').prepend('Inscriut-te')
+ var jaestasinscrit = '{{ jaestasinscrit}}';
+
+    if (jaestasinscrit ==1){
+        $("#clic").text('Desincriuret')
+        $("#clic").addClass('btn-danger')
+    }else {
+        $("#clic").text('Insciu-te')
+        $("#clic").addClass('btn-success')
+    }
+
+//Inscriure's
+
+$("#clic").on('click',function(){
+    var carta = document.getElementById( "clic" );
+	carta.className = (carta.className=="btn btn-success")?"btn btn-success btn btn-danger":"btn btn-success";
+
+    if ($('#clic').html() == 'Insciu-te') {
+         $("#clic").text('Desincriures');
+                     //$("#clic").removeClass('btn-success')
+            //$("#clic").addClass('btn-danger')
+    }else {
+            $("#clic").text('Insciu-te');
+            //$("#clic").removeClass('btn-danger')
+
+            //$("#clic").addClass('btn-success')
+    }
+
+
+    //inscriures
+            $.ajax({
+                       // headers: { "X-CSRFToken": getCookie("csrftoken") },
+                 type:"POST",
+                 url:"/activitats/inscriures/",
+                 data: {
+                        'creador': creador,
+                        'activitat': {{ activitat.id }},
+                        'csrfmiddlewaretoken': '{{ csrf_token }}',// from form
+                  },
+                 success: function(){
+                    }
+            });
+       });
+     }
+
+
+//MAPA
+
     var x = "{{  activitat.localitat.latitud}}";
     x = x.replace(",",".")
     var y = "{{ activitat.localitat.longitud }}";
