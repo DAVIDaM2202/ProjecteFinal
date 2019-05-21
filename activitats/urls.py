@@ -12,9 +12,12 @@ urlpatterns = [
     url(r'pantallaInici/$', views.pantallaInici, name='pantallaInici'),
     url(r'^editaractivitat/(?P<id_activitat>\d+)/', views.editarActivita, name='editarActivitat'),
     url(r'ensenyar/$', views.ensenyar, name='ensenyar'),
+    url(r'comentaris/$', views.comentaris, name='comentaris'),
     url(r'activitatsPropies/$', views.activitatsPropies, name='activitatsPropies'),
     url(r'api_Localitats/$', views.apiLocalitats, name='localitats'),
     url(r'activitatDetallada/(?P<id_activitat>\d+)/$', views.activitatDetallada, name='activitatDetallada'),
     url(r'inscriures/', views.inscriures, name='inscriures'),
+    url(r'crearComentari/', views.crearComentari, name='crearComentari'),
+    url(r'editarPerfil/(?P<id_persona>\d+)/$', views.editarPerfil, name='editarPerfil'),
 
 ]

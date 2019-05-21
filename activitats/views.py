@@ -11,17 +11,17 @@ from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import render
 from django.shortcuts import render, get_object_or_404
 
-from activitats.forms import registrePersona, User, formActivitats
+from activitats.forms import registrePersona, User, formActivitats, editPersona
 from activitats.models import Persona
 from django.urls import reverse
-from activitats.models import Activitat,Localitat,activitat_persones_inscrites
+from activitats.models import Activitat,Localitat,activitat_persones_inscrites,Comentari
 
 def index(request):
     return render(request,'activitats/index.html')
 @login_required
-
 def pantallaInici(request):
     form = formActivitats(request.POST or None)
+    x = Persona.objects.get(user=request.user)
     if request.method == 'POST':
         if form.is_valid():
             form_data = form.cleaned_data
@@ -39,14 +39,14 @@ def pantallaInici(request):
             return HttpResponseRedirect(reverse('activitats:pantallaInici', ))
     context = {
         "form": form,
+        "persona":x,
     }
     return render(request, 'activitats/pantallaInicial.html', context)
 
-
+##########################EDITAR ACTIVITAT#############################
 def editarActivita(request, id_activitat= None):
     if id_activitat:
         activitat = get_object_or_404(Activitat, pk=id_activitat)
-
     else:
         activitat = Activitat()
     if request.method == 'POST':
@@ -61,6 +61,24 @@ def editarActivita(request, id_activitat= None):
     context = {'form': form}
     return render(request, 'activitats/editarActivitat.html', context)
 
+########################## EDITAR PERFIL ##############
+def editarPerfil(request, id_persona):
+   persona = Persona.objects.all().filter(pk=id_persona)[0]
+   print (persona.user.password)
+   form = editPersona(request.POST or None, initial={"nom":persona.nom,"cognom":persona.cognom,"correu":persona.correu,"nom_usuari":persona.user.username})
+   if request.method == 'POST':
+       if form.is_valid():
+           form_data = form.cleaned_data
+           nom = form_data.get("nom")
+           cognom = form_data.get("cognom")
+           correu = form_data.get("correu")
+           Persona.objects.filter(pk=id_persona).update(nom=nom,cognom=cognom,correu=correu)
+           return HttpResponseRedirect(reverse('activitats:pantallaInici', ))
+
+   context = {
+        "form": form,
+    }
+   return render(request,'activitats/editarPersona.html',context)
 
 def registre(request):
     form=registrePersona(request.POST or None)
@@ -86,7 +104,7 @@ def registre(request):
     return render(request, 'activitats/formulari.html', context)
 
 
-
+######################### INSCRIURES ###############################
 def inscriures (request):
     personaobject= Persona.objects.get(user=request.user)
     activitatobject= Activitat.objects.get(pk= request.POST.get('activitat'))
@@ -100,7 +118,7 @@ def inscriures (request):
         print 'desinscrit'
     return render(request,'activitats/informacioActivitats.html' )
 
-
+#########################################Ensenyar activitats###############################
 def ensenyar(request):
     if request.method == "GET":
         activitats = Activitat.objects.all()
@@ -114,11 +132,35 @@ def serializer(activitat):
 
     return {'id':activitat.id,'nom': activitat.nom,'descripcio': activitat.descripcio,'dia':dia,'diafinal':diafinal,'localitat':activitat.localitat.nom,'categoria': activitat.categoria.nom
         }
+############################################Comentaris########################################
+def comentaris(request):
+    if request.method == "GET":
+        id = request.GET.get('busca')
+        activitat = Activitat.objects.get(pk = id)
+        comentaris = Comentari.objects.filter(id_activitat = activitat)
+        llista = [ serializer1(comentari) for comentari in comentaris ]
+        return HttpResponse(json.dumps(llista), content_type='aplication/json')
+    HttpResponseRedirect(reverse('Index'))
 
+def serializer1(comentari):
+    data = str(comentari.data)
+    return {'textt':comentari.text,'dataa': data,'persona': comentari.persona
+        }
+
+def crearComentari(request):
+    textrebut=  request.POST.get('text')
+    activitatobject= Activitat.objects.get(pk= request.POST.get('activitat'))
+    x = Comentari.objects.create(text=textrebut,persona=request.user,id_activitat=activitatobject)
+    return render(request,'activitats/informacioActivitats.html' )
+
+
+
+############################################Les meves activitats###################3
 def activitatsPropies(request):
     nom = Q(creador= str(request.user.get_username()))
     print nom
     activitats = Activitat.objects.filter(nom)
+
     print activitats
     context = {
         "activtats": activitats,

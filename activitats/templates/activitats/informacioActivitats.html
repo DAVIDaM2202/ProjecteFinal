@@ -1,6 +1,10 @@
-
-
-{% extends 'base.html' %} {% block content %}
+{% extends 'base.html' %} {% block content %} {% load crispy_forms_tags %}
+ <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.3.4/dist/leaflet.css" integrity="sha512-puBpdR0798OZvTTbP4A8Ix/l+A4dHDD0DGqYW6RQ+9jxkRFclaxxQb/SJAWZfWAkuyeQUytO7+7N4QKrDh+drA==" crossorigin=""/>
+    <script src="https://unpkg.com/leaflet@1.3.4/dist/leaflet.js" integrity="sha512-nMMmRyTVoLYqjP9hrbed9S+FzjZHW5gY1TWCHA5ckwXZBadntCNs8kEqAWdrb9O7rxbCaA4lKTIWjDXZxflOcA=="crossorigin=""></script>
+    <script type='text/javascript' src='http://cdnjs.cloudflare.com/ajax/libs/leaflet.markercluster/0.4.0/leaflet.markercluster.js'></script>
 
 
     <div class="row col-12 mt-5">
@@ -11,7 +15,7 @@
     <button id="clic" type="submit" class="btn"></button>
     <h4>Nom:  {{ activitat.nom }}</h4>
        <h4>Descripció: {{ activitat.descripcio }}</h4>
-       <h4>Dia:  {{ activitat.dia }}</h4>
+       <h4>Dia:  {{ activitat.dia.day }} {{ activitat.dia.month }} {{ activitat.dia.year }} {{ activitat.dia.hour }}:{{ activitat.dia.minute }}</h4>
        <h4>Ultim dia: {{ activitat.diafinal }}</h4>
         <h4>Localitat: {{ activitat.localitat.nom }}</h4>
        <h4>Categoria: {{ activitat.categoria.nom }}</h4>
@@ -21,18 +25,110 @@
     </div>
     </div>
 
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
-    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.3.4/dist/leaflet.css" integrity="sha512-puBpdR0798OZvTTbP4A8Ix/l+A4dHDD0DGqYW6RQ+9jxkRFclaxxQb/SJAWZfWAkuyeQUytO7+7N4QKrDh+drA==" crossorigin=""/>
-    <script src="https://unpkg.com/leaflet@1.3.4/dist/leaflet.js" integrity="sha512-nMMmRyTVoLYqjP9hrbed9S+FzjZHW5gY1TWCHA5ckwXZBadntCNs8kEqAWdrb9O7rxbCaA4lKTIWjDXZxflOcA=="crossorigin=""></script>
-    <script type='text/javascript' src='http://cdnjs.cloudflare.com/ajax/libs/leaflet.markercluster/0.4.0/leaflet.markercluster.js'></script>
+   <div class="container">
+  <div class="row">
+    <div class="col-sm-10 col-sm-offset-1" id="logout">
+
+        <div class="comment-tabs">
+            <ul class="nav nav-tabs" role="tablist">
+                <li class="active"><a href="#comments-logout" role="tab" id="comments" data-toggle="tab"><h4 class="reviews text-capitalize">Comments</h4></a></li>
+                <li><a href="#add-comment" role="tab" data-toggle="tab"><h4 class="reviews text-capitalize">Add comment</h4></a></li>
+            </ul>
+            <div class="tab-content" style="padding-bottom: 23vh; border-color: transparent !important;">
+                <div class="tab-pane active" id="comments-logout">
+                    <ul class="media-list">
+
+                    </ul>
+                </div>
+                <div class="tab-pane" id="add-comment">
+                         <div class="form-group">
+                            <label for="email" class="col-sm-2 control-label">Comment</label>
+                            <div class="col-sm-10">
+                              <textarea class="form-control" name="addComment" id="addComment" rows="5"></textarea>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="col-sm-offset-2 col-sm-10">
+                                <button class="btn btn-success btn-circle text-uppercase enviar" type="submit" id="submitComment"><span class="glyphicon glyphicon-send"></span> Summit comment</button>
+                            </div>
+                        </div>
+                </div>
+            </div>
+        </div>
+	</div>
+  </div>
+  </div>
+
 
     <script>
-  var mymap=0;
-var marcadores=[];
-$(document).ready(function(){
 
+$(document).ready(function(){
+      var mymap=0;
+var marcadores=[];
+//Commentari
+
+    $("#submitComment").on('click',function(){
+          $( "#comments" ).trigger( "click" );
+
+
+    var text = $("#addComment").val();
+    console.log(text)
+                       // headers: { "X-CSRFToken": getCookie("csrftoken") },
+
+                 $.ajax({
+                 type:"POST",
+                 url:"/activitats/crearComentari/",
+                 data: {
+                        'text': text,
+                        'activitat': {{ activitat.id }},
+                        'csrfmiddlewaretoken': '{{ csrf_token }}',// from form
+                  },
+                 success: function(){
+                      $("#addComment").val('');
+                $(".media").remove()
+                     $.get("/comentaris?busca="+id, function(data) {
+                var c = 0;
+                console.log(data)
+                $.each(data, function(index, element) {
+                    $(".media-list").prepend("<li class='media primer"+c+"'>");
+                    $(".primer" + c).prepend("<div class='media-body segon"+c+"'>");
+                    $(".segon" + c).prepend("<div class='well well-lg tercer"+c+"'>");
+                    $(".tercer" + c).append("<h4 class='media-heading text-uppercase reviews '>"+element.persona+" </h4>");
+                    $(".tercer" + c).append("<a class='dd'>"+element.dataa+"</a>");
+                    $(".tercer" + c).append("<p class='media-comment'>"+element.textt);
+                    c++;
+                })
+            })
+                    }
+            });
+
+
+
+             //cridar_comentar();
+
+
+       });
+
+    //comentaris
+    var id= "{{ activitat.id }}";
+    function cridar_comentar(){
+        $.get("/comentaris?busca="+id, function(data) {
+                var c = 0;
+                console.log(data)
+                $.each(data, function(index, element) {
+                    $(".media-list").prepend("<li class='media primer"+c+"'>");
+                    $(".primer" + c).prepend("<div class='media-body segon"+c+"'>");
+                    $(".segon" + c).prepend("<div class='well well-lg tercer"+c+"'>");
+                    $(".tercer" + c).append("<h4 class='media-heading text-uppercase reviews '>"+element.persona+" </h4>");
+                    $(".tercer" + c).append("<a class='dd'>"+element.dataa+"</a>");
+                    $(".tercer" + c).append("<p class='media-comment'>"+element.textt);
+                    c++;
+                })
+            })
+    }
+     cridar_comentar();
+
+//Boto insciures
     var creador= "{{ activitat.creador }}";
     var userlogin= "{{ user.get_username }}";
 if (creador !== userlogin){
@@ -63,12 +159,12 @@ $("#clic").on('click',function(){
             //$("#clic").removeClass('btn-danger')
 
             //$("#clic").addClass('btn-success')
-    }
+}
 
 
     //inscriures
             $.ajax({
-                       // headers: { "X-CSRFToken": getCookie("csrftoken") },
+                                       // headers: { "X-CSRFToken": getCookie("csrftoken") },
                  type:"POST",
                  url:"/activitats/inscriures/",
                  data: {
@@ -100,4 +196,6 @@ $("#clic").on('click',function(){
 
 })
 </script>
+
+
 {% endblock %}t>

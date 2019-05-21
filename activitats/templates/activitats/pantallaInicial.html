@@ -1,28 +1,17 @@
 {% extends 'base.html' %} {% block content %} {% load crispy_forms_tags %}
-<!DOCTYPE html>
-<html lang="en">
-<script src="https://code.jquery.com/jquery-3.4.1.js"></script>
+
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.15.1/moment.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/js/bootstrap.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datetimepicker/4.17.47/js/bootstrap-datetimepicker.min.js"></script>
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datetimepicker/4.17.47/css/bootstrap-datetimepicker.min.css">
-<!---Select 2-->
+
 <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.6-rc.0/js/select2.min.js"></script>
 <link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.6-rc.0/css/select2.min.css" rel="stylesheet" />
 
-<head>
-    <meta charset="UTF-8">
-    <title>Title</title>
-</head>
-
-<body>
 
     <h1>Benvingut {{ user.get_username}}</h1>
-    <!--<h1>{{ user.id}}</h1>
--->
     <a href="{% url 'logout' %}"><i class="fas fa-sign-out-alt"></i> Sortir</a>
     <a id="nova" type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal">
 Crear Activitat</a>
@@ -50,6 +39,8 @@ Crear Activitat</a>
         </div>
     </div>
     <td><a href="{% url 'activitats:activitatsPropies' %}">Les meves Activitats</a></td>
+        <td><a href="{% url 'activitats:editarPerfil' persona.id %}">Editar perfil</a></td>
+
     <div class=" row general col-12">
     </div>
 
@@ -87,8 +78,5 @@ Crear Activitat</a>
         });
     </script>
 
-</body>
-
-</html>
 
 {% endblock %}

@@ -2,6 +2,7 @@
 from __future__ import unicode_literals
 from django.db import models
 from django.contrib.auth.models import User
+from django.utils import timezone
 
 class Persona(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE,verbose_name="Nom del usuari")
@@ -34,6 +35,7 @@ class Activitat(models.Model):
     persones_inscrites = models.ManyToManyField(Persona, through='activitat_persones_inscrites')
     def __str__(self):
         return self.nom
+
 class activitat_persones_inscrites(models.Model):
     persona = models.ForeignKey(Persona, on_delete=models.CASCADE)
     activitat = models.ForeignKey(Activitat, on_delete=models.CASCADE)
@@ -43,4 +45,11 @@ class activitat_persones_inscrites(models.Model):
         unique_together = (("persona", "activitat"),)
     def __str__(self):
             return '{0} esta inscrit a la activitat {1}'.format(self.persona.nom,self.activitat.nom)
-    #resize: none;
+
+class Comentari(models.Model):
+    text = models.TextField(max_length=500, blank=False, default='', verbose_name="text")
+    data = models.DateTimeField(max_length=100, default= timezone.now, verbose_name="data")
+    persona = models.CharField(max_length=250, blank=False, default='', verbose_name="persona")
+    id_activitat = models.ForeignKey(Activitat, verbose_name="idactivitat")
+    def __str__(self):
+        return self.persona

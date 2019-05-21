@@ -23,6 +23,11 @@ class registrePersona(ModelForm):
         if password != confirm_password:
             raise ValidationError("No coincideixen les contrasenyes")
 
+class editPersona(ModelForm):
+    class Meta:
+        model = Persona
+        fields = ["nom","cognom","correu"]
+
 class formActivitats(ModelForm):
     class Meta:
         model = Activitat
