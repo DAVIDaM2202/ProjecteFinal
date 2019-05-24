@@ -1,4 +1,6 @@
 {% extends 'base.html' %}
+{% block perfil %}{% url 'activitats:editarPerfil' %}{% endblock %}
+{% block quefer %}{% url 'activitats:pantallaInici'%}{% endblock %}
 {% block content %}
 {% load crispy_forms_tags %}
 <!DOCTYPE html>

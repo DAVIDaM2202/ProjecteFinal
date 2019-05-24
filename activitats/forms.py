@@ -1,3 +1,5 @@
+import datetime
+
 from django.core.exceptions import ValidationError
 from django.forms import ModelForm, Select
 from activitats.models import *
@@ -19,7 +21,7 @@ class registrePersona(ModelForm):
         nom_usuari = self.cleaned_data['nom_usuari']
         user = User.objects.filter(username=nom_usuari).count()
         if user > 0:
-            raise ValidationError("El usario ya existe")
+            raise ValidationError("El usuari ja existeix")
         if password != confirm_password:
             raise ValidationError("No coincideixen les contrasenyes")
 
@@ -32,7 +34,16 @@ class formActivitats(ModelForm):
     class Meta:
         model = Activitat
         fields = ["nom","descripcio","dia","diafinal","localitat","categoria"]
-        widgets = {'dia': DateTimePicker(options={"format": "YYYY-MM-DD HH:mm:ss"}),
-                   'diafinal': DateTimePicker(options={"format": "YYYY-MM-DD HH:mm:ss" }),
+        widgets = {'dia': DateTimePicker(options={"format": "YYYY-MM-DD HH:mm"}),
+                   'diafinal': DateTimePicker(options={"format": "YYYY-MM-DD HH:mm" }),
                    'localitat': Select(attrs={'class': 'localitat','style':'width: 100% !important'})
                    }
+    def clean(self):
+        dia = self.cleaned_data['dia']
+
+        diafinal = self.cleaned_data['diafinal']
+        print diafinal.day
+        if diafinal < dia:
+            print 'entra'
+            raise ValidationError("No pots ficar una data mes petita, corregeix l'activitat")
+        #        if dia.day < diafinal.day and dia.month >= diafinal.month:

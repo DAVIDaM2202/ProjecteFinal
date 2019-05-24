@@ -1,11 +1,14 @@
-{% extends 'base.html' %} {% block content %} {% load crispy_forms_tags %}
- <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+{% extends 'base.html' %}     {% block perfil %}{% url 'activitats:editarPerfil' %}{% endblock %}
+{% block quefer %}{% url 'activitats:pantallaInici'%}{% endblock %}{% block content %}
+
+
+    {% load crispy_forms_tags %}
+     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.3.4/dist/leaflet.css" integrity="sha512-puBpdR0798OZvTTbP4A8Ix/l+A4dHDD0DGqYW6RQ+9jxkRFclaxxQb/SJAWZfWAkuyeQUytO7+7N4QKrDh+drA==" crossorigin=""/>
     <script src="https://unpkg.com/leaflet@1.3.4/dist/leaflet.js" integrity="sha512-nMMmRyTVoLYqjP9hrbed9S+FzjZHW5gY1TWCHA5ckwXZBadntCNs8kEqAWdrb9O7rxbCaA4lKTIWjDXZxflOcA=="crossorigin=""></script>
     <script type='text/javascript' src='http://cdnjs.cloudflare.com/ajax/libs/leaflet.markercluster/0.4.0/leaflet.markercluster.js'></script>
-
 
     <div class="row col-12 mt-5">
 
@@ -13,6 +16,35 @@
      <h1> Informacio de aquest activitat</h1>
 
     <button id="clic" type="submit" class="btn"></button>
+
+
+    <!-- Button trigger modal -->
+<button id="boto" type="submit" class="btn btn-danger" data-toggle="modal" data-target="#exampleModalCenter">
+  Eliminar
+</button>
+    <a id="boto2" class="btn btn-danger" href="{% url 'activitats:editarActivitat' activitat.id %}">Editar</a>
+
+<!-- Modal -->
+<div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLongTitle">Modal title</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        Esta segur que vol eliminar aquesta activitat planejada per el proxim {{ activitat.dia.day }}
+      </div>
+      <div class="modal-footer">
+        <button type="button" id="eliminar" class="btn btn-secondary" >Si</button>
+        <button type="button" class="btn btn-primary" data-dismiss="modal">No</button>
+      </div>
+    </div>
+  </div>
+</div>
+
     <h4>Nom:  {{ activitat.nom }}</h4>
        <h4>Descripció: {{ activitat.descripcio }}</h4>
        <h4>Dia:  {{ activitat.dia.day }} {{ activitat.dia.month }} {{ activitat.dia.year }} {{ activitat.dia.hour }}:{{ activitat.dia.minute }}</h4>
@@ -31,8 +63,8 @@
 
         <div class="comment-tabs">
             <ul class="nav nav-tabs" role="tablist">
-                <li class="active"><a href="#comments-logout" role="tab" id="comments" data-toggle="tab"><h4 class="reviews text-capitalize">Comments</h4></a></li>
-                <li><a href="#add-comment" role="tab" data-toggle="tab"><h4 class="reviews text-capitalize">Add comment</h4></a></li>
+                <li class="active"><a href="#comments-logout" role="tab" id="comments" data-toggle="tab"><h4 class="reviews text-capitalize">Comentari</h4></a></li>
+                <li><a href="#add-comment" role="tab" data-toggle="tab"><h4 class="reviews text-capitalize">Nou Comentari</h4></a></li>
             </ul>
             <div class="tab-content" style="padding-bottom: 23vh; border-color: transparent !important;">
                 <div class="tab-pane active" id="comments-logout">
@@ -41,15 +73,16 @@
                     </ul>
                 </div>
                 <div class="tab-pane" id="add-comment">
+                                                <label for="email" class="col-sm-2 control-label">Commentaris</label>
+
                          <div class="form-group">
-                            <label for="email" class="col-sm-2 control-label">Comment</label>
                             <div class="col-sm-10">
                               <textarea class="form-control" name="addComment" id="addComment" rows="5"></textarea>
                             </div>
                         </div>
                         <div class="form-group">
                             <div class="col-sm-offset-2 col-sm-10">
-                                <button class="btn btn-success btn-circle text-uppercase enviar" type="submit" id="submitComment"><span class="glyphicon glyphicon-send"></span> Summit comment</button>
+                                <button class="btn btn-success btn-circle text-uppercase enviar mt-5 mb-5" type="submit" id="submitComment"><span class="glyphicon glyphicon-send"></span>Commentar</button>
                             </div>
                         </div>
                 </div>
@@ -132,12 +165,16 @@ var marcadores=[];
     var creador= "{{ activitat.creador }}";
     var userlogin= "{{ user.get_username }}";
 if (creador !== userlogin){
-   $('#incriurte').attr('href','inscriures')
-    $('#incriurte').prepend('Inscriut-te')
+$("#boto").remove();
+$("#boto2").remove();
+
+
+   /*$('#incriurte').attr('href','inscriures')
+    $('#incriurte').prepend('Inscriut-te')*/
  var jaestasinscrit = '{{ jaestasinscrit}}';
 
     if (jaestasinscrit ==1){
-        $("#clic").text('Desincriuret')
+        $("#clic").text('Desinscriuret')
         $("#clic").addClass('btn-danger')
     }else {
         $("#clic").text('Insciu-te')
@@ -152,17 +189,11 @@ $("#clic").on('click',function(){
 
     if ($('#clic').html() == 'Insciu-te') {
          $("#clic").text('Desincriures');
-                     //$("#clic").removeClass('btn-success')
-            //$("#clic").addClass('btn-danger')
+
     }else {
             $("#clic").text('Insciu-te');
-            //$("#clic").removeClass('btn-danger')
-
-            //$("#clic").addClass('btn-success')
 }
 
-
-    //inscriures
             $.ajax({
                                        // headers: { "X-CSRFToken": getCookie("csrftoken") },
                  type:"POST",
@@ -177,7 +208,33 @@ $("#clic").on('click',function(){
             });
        });
      }
+//Eliminar
+    if (creador == userlogin){
+                $("#clic").remove();
 
+
+        $("#eliminar").text('Eliminar')
+        $("#eliminar").addClass('btn-danger')
+
+
+
+$("#eliminar").on('click',function(){
+
+            $.ajax({
+                                       // headers: { "X-CSRFToken": getCookie("csrftoken") },
+                 type:"POST",
+                 url:"/activitats/eliminaractivitat/",
+                 data: {
+                        'activitat': {{ activitat.id }},
+                        'csrfmiddlewaretoken': '{{ csrf_token }}',// from form
+                  },
+                 success: function(){
+                     window.location.replace({% url 'activitats:pantallaInici'%});
+
+                    }
+            });
+       });
+     }
 
 //MAPA
 

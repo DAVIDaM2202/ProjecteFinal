@@ -12,7 +12,7 @@ from django.shortcuts import render
 from django.shortcuts import render, get_object_or_404
 
 from activitats.forms import registrePersona, User, formActivitats, editPersona
-from activitats.models import Persona
+from activitats.models import Persona, Categoria
 from django.urls import reverse
 from activitats.models import Activitat,Localitat,activitat_persones_inscrites,Comentari
 
@@ -20,6 +20,8 @@ def index(request):
     return render(request,'activitats/index.html')
 @login_required
 def pantallaInici(request):
+    x = datetime.datetime.now()##############################aqui
+    print x
     form = formActivitats(request.POST or None)
     x = Persona.objects.get(user=request.user)
     if request.method == 'POST':
@@ -32,7 +34,6 @@ def pantallaInici(request):
             localitat = form_data.get("localitat")
             categoria = form_data.get("categoria")
             creador = str(request.user.get_username())
-            print (form_data)
             activitat = Activitat.objects.create(nom=nom,descripcio=descripcio,dia=dia,diafinal=diafinal,localitat=localitat,categoria=categoria,creador=creador)
             activitat.save()
 
@@ -41,10 +42,12 @@ def pantallaInici(request):
         "form": form,
         "persona":x,
     }
+
     return render(request, 'activitats/pantallaInicial.html', context)
 
 ##########################EDITAR ACTIVITAT#############################
 def editarActivita(request, id_activitat= None):
+
     if id_activitat:
         activitat = get_object_or_404(Activitat, pk=id_activitat)
     else:
@@ -53,18 +56,20 @@ def editarActivita(request, id_activitat= None):
         form = formActivitats(request.POST, initial={'dia': datetime.date.today()}, instance=activitat)
         if form.is_valid():
             form.save()
-            return HttpResponseRedirect(reverse('activitats:pantallaInici'))
+            context = {
+                "activitat": activitat,
+            }
+            return render(request, 'activitats/informacioActivitats.html',context)
 
     else:
-        form = formActivitats(initial={'dia': datetime.date.today()}, instance=activitat)
+        form = formActivitats( instance=activitat)
 
     context = {'form': form}
     return render(request, 'activitats/editarActivitat.html', context)
 
 ########################## EDITAR PERFIL ##############
-def editarPerfil(request, id_persona):
-   persona = Persona.objects.all().filter(pk=id_persona)[0]
-   print (persona.user.password)
+def editarPerfil(request):
+   persona = Persona.objects.all().filter(user=request.user)[0]
    form = editPersona(request.POST or None, initial={"nom":persona.nom,"cognom":persona.cognom,"correu":persona.correu,"nom_usuari":persona.user.username})
    if request.method == 'POST':
        if form.is_valid():
@@ -72,7 +77,7 @@ def editarPerfil(request, id_persona):
            nom = form_data.get("nom")
            cognom = form_data.get("cognom")
            correu = form_data.get("correu")
-           Persona.objects.filter(pk=id_persona).update(nom=nom,cognom=cognom,correu=correu)
+           Persona.objects.filter(pk=persona.id).update(nom=nom,cognom=cognom,correu=correu)
            return HttpResponseRedirect(reverse('activitats:pantallaInici', ))
 
    context = {
@@ -112,11 +117,40 @@ def inscriures (request):
     if (activitats_inscrits == 0):
         x = activitat_persones_inscrites.objects.create(persona=personaobject,activitat=activitatobject,assistira='1')
         x.save()
-        print 'incrit'
     else:
         activitat_persones_inscrites.objects.get(persona=personaobject, activitat=activitatobject, assistira='1').delete()
-        print 'desinscrit'
     return render(request,'activitats/informacioActivitats.html' )
+
+############################################Les meves activitats###################
+def activitatsPropies(request):
+    nom = Q(creador= str(request.user.get_username()))
+    activitats = Activitat.objects.filter(nom)
+
+    context = {
+        "activtats": activitats,
+    }
+    return render(request, 'activitats/lesMevesActivitats.html', context)
+
+
+
+
+######################### Activits a les que estic inscrit ###################
+
+def activitatsincrit(request):
+
+    now = datetime.datetime.now()
+    print now
+    personaobject= Persona.objects.get(user=request.user)
+    activitats = activitat_persones_inscrites.objects.filter(persona= personaobject,assistira='1')
+    for x in activitats:
+        print x.activitat.nom
+    context = {
+        "activtats": activitats,
+    }
+    return render(request, 'activitats/programades.html', context)
+
+
+
 
 #########################################Ensenyar activitats###############################
 def ensenyar(request):
@@ -151,21 +185,11 @@ def crearComentari(request):
     textrebut=  request.POST.get('text')
     activitatobject= Activitat.objects.get(pk= request.POST.get('activitat'))
     x = Comentari.objects.create(text=textrebut,persona=request.user,id_activitat=activitatobject)
-    return render(request,'activitats/informacioActivitats.html' )
-
-
-
-############################################Les meves activitats###################3
-def activitatsPropies(request):
-    nom = Q(creador= str(request.user.get_username()))
-    print nom
-    activitats = Activitat.objects.filter(nom)
-
-    print activitats
     context = {
-        "activtats": activitats,
+        "activitat": activitatobject,
     }
-    return render(request, 'activitats/lesMevesActivitats.html', context)
+    return render(request,'activitats/informacioActivitats.html',context )
+
 
 
 def apiLocalitats(request):
@@ -199,3 +223,29 @@ def activitatDetallada(request, id_activitat):
         "jaestasinscrit": text,
     }
     return render(request, 'activitats/informacioActivitats.html',{'activitat':activitat})
+
+#########################Eliminar ############################################
+def deleteActivitat(request):
+    Activitat.objects.get(pk= request.POST.get('activitat')).delete()
+    return HttpResponseRedirect(reverse('activitats:pantallaInici', ))
+
+
+######################## Filtre categoria #################################
+
+def filtrecomentari(request):
+    if request.method == "GET":
+        nom = request.GET.get('busca')
+        activitats = Activitat.objects.all().filter(categoria__nom=nom)#porbart categoria__nom
+        llista = [serializer2(activitat) for activitat in activitats]
+        print llista
+        return HttpResponse(json.dumps(llista), content_type='aplication/json')
+    HttpResponseRedirect(reverse('Index'))
+
+
+
+def serializer2(activitat):
+    dia = str(activitat.dia)
+    diafinal = str(activitat.diafinal)
+
+    return {'id':activitat.id,'nom': activitat.nom,'descripcio': activitat.descripcio,'dia':dia,'diafinal':diafinal,'localitat':activitat.localitat.nom,'categoria': activitat.categoria.nom
+        }
