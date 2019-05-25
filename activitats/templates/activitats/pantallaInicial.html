@@ -17,21 +17,25 @@
 
 
     <div class="row col-12">
-    <div class="col-6">
-            <h1>Benvingut {{ user.get_username}}</h1>
-      <div >
-            <a id="filtre" type="button" class="btn btn-info align-middle ">Filtres de Busqueda</a>
+    <div class="col-6 pl-5">
+        <div class="pl-5">
+                        <h1>Benvingut {{ user.get_username}}</h1>
+
+        </div>
+      <div class="pl-5">
+            <a id="filtre" type="btn btn-danger" class="btn btn-info align-middle ">Filtres de Busqueda</a>
     </div>
     </div>
     <div class="col-6 justify-content-end d-flex" style="align-self: center">
-            <a id="nova" type="button" class="btn btn-success align-middle " data-toggle="modal" data-target="#exampleModal">
-Crear Activitat</a>
+            <button id="nova" type="button" class="btn btn-success align-middle " data-toggle="modal" data-target="#exampleModal">
+                Crear Activitat</button>
     </div>
 
 
     </div>
 
-      <div id="divfiltres" class="row col-12 mt-5 amagar">
+      <div id="divfiltres" class="row col-12 mt-5 amagar pl-5">
+      <div class="pl-5">
    <div class="col-3">
    <div class="form-group">
   <label for="sel1">Activitat</label>
@@ -50,6 +54,7 @@ Crear Activitat</a>
             <a id="aplicarfiltre" type="button" class="btn btn-success align-middle ">Aplicar</a>
 
 </div>
+      </div>
 
     </div>
 
@@ -65,7 +70,7 @@ Crear Activitat</a>
         <div class="modal-dialog" role="document">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="exampleModalLabel">Crear una Activitat</h5>
+                    <h5 class="modal-title " id="exampleModalLabel">Crear una Activitat</h5>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                     </button>
@@ -89,17 +94,20 @@ Crear Activitat</a>
 
     <script>
         $(document).ready(function() {
+            ensenyar();
 //Filtre
             $("#filtre").on('click',function(){
                  var formulari = document.getElementById( "divfiltres" );
-	        formulari.className = (formulari.className=="row col-12 mt-5 amagar")?"row col-12 mt-5 ensenyar":"row col-12 mt-5 amagar";
+	        formulari.className = (formulari.className=="row col-12 mt-5 amagar pl-5")?"row col-12 mt-5 ensenyar pl-5":"row col-12 mt-5 amagar pl-5";
 
             });
                 var text=$("#sel1").val();
   $("#aplicarfiltre").on('click',function(){
     var text=$("#sel1").val();
-    if (text !== 'Buscar...'){
+    if (text !== 'Totes'){
     filtreCategories(text)
+    }else {
+        ensenyar();
     }
   });
   function filtreCategories(text){
@@ -115,19 +123,26 @@ Crear Activitat</a>
                 $.each(data, function(index, element) {
                     $(".general").prepend("<div class=' card col-sm-5 mr-auto ml-auto m-5 segon" + c + "'>");
                     $(".segon" + c).prepend("<div class='card-body tercer" + c + "'>");
-                    $(".tercer" + c).prepend("<a href='/activitatDetallada/" + element.id + "' class='btn btn-primary'>Mes informacio</a>");
+                    $(".tercer" + c).prepend("<a href='/activitatDetallada/" + element.id + "' class='btn btn-primary'>Més informació</a>");
                     $(".tercer" + c).prepend("<p class='card-text'>" + element.descripcio + "</p>");
-                    $(".tercer" + c).prepend("<h5 class='card-title'>" + element.nom + "</h5>");
-                    $(".segon" + c).prepend("<h5 class='card-header'>" + element.categoria);
+                    $(".tercer" + c).prepend("<h5 class='card-title '>" + element.nom + "</h5>");
+                    $(".segon" + c).prepend("<h5 class='card-header bg-light text-dark'>" + element.categoria);
 
                     c++;
                 })
+             }else {
+                 $(".general").empty();
+                 $(".general").prepend("<div class=' col-sm-5 mr-auto ml-auto m-5 segon'>");
+
+                 $(".segon").prepend(" <div class='alert alert-block alert-danger'> Cap categoria</div>");
+
              }
 
             })
   }
 
-
+function ensenyar(){
+                 $(".general").empty();
 
                 //Ensenyar
             $(document).off('focusin.modal');
@@ -139,16 +154,17 @@ Crear Activitat</a>
                 $.each(data, function(index, element) {
                     $(".general").prepend("<div class=' card col-sm-5 mr-auto ml-auto m-5 segon" + c + "'>");
                     $(".segon" + c).prepend("<div class='card-body tercer" + c + "'>");
-                    $(".tercer" + c).prepend("<a href='/activitatDetallada/" + element.id + "' class='btn btn-primary'>Mes informacio</a>");
-                    $(".tercer" + c).prepend("<p class='card-text'>" + element.descripcio + "</p>");
-                    $(".tercer" + c).prepend("<h5 class='card-title'>" + element.nom + "</h5>");
-                    $(".segon" + c).prepend("<h5 class='card-header'>" + element.categoria);
+                    $(".tercer" + c).prepend("<a href='/activitatDetallada/" + element.id + "' class='btn btn-primary'>Més informació</a>");
+                    $(".tercer" + c).prepend("<p class='card-text '>" + element.descripcio + "</p>");
+                    $(".tercer" + c).prepend("<h5 class='card-title '>" + element.nom + "</h5>");
+                    $(".segon" + c).prepend("<h5 class='card-header bg-light text-dark'>" + element.categoria+"</h5>");
 
                     c++;
                 })
             })
-        });
-        $('.localitat').select2({
+    }
+
+            $('.localitat').select2({
             ajax: {
                 url: function(params) {
                     return 'activitats/api_Localitats';
@@ -160,6 +176,8 @@ Crear Activitat</a>
         $(".localitat").select2({
             dropdownParent: $("#exampleModal")
         });
+        });
+
     </script>
 
 

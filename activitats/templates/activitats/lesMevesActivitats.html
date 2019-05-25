@@ -1,15 +1,21 @@
 {% extends 'base.html' %}
 {% block perfil %}{% url 'activitats:editarPerfil' %}{% endblock %}
 {% block quefer %}{% url 'activitats:pantallaInici'%}{% endblock %}{% block content %}
-    <h1> Les meves activitats</h1>
+
+        <div class="row col-12 pl-5 mt-5">
+    <div class="col-6 ">
+         <h1> Les meves activitats</h1>
+
+    </div>
+    </div>
     <div class="row col-12">
     {% for activitat in activtats %}
       <div class=" card col-sm-5 mr-auto ml-auto m-5 segon2">
           <h5 class="card-header">{{ activitat.categoria }}</h5>
           <div class="card-body tercer2">
-              <h5 class="card-title">{{ activitat.nom }}</h5>
+              <p class="">{{ activitat.nom }}</p>
               <p class="card-text">{{ activitat.descripcio}}</p>
-               <td ><a  class="btn btn-primary" href="{% url 'activitats:activitatDetallada' activitat.id %}">Més info</a></td>
+               <td ><a  class="btn btn-primary" href="{% url 'activitats:activitatDetallada' activitat.id %}">Més informació</a></td>
 
           </div>
       </div>

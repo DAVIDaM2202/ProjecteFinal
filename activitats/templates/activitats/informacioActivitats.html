@@ -13,7 +13,6 @@
     <div class="row col-12 mt-5">
 
 <div class="klk col-md-6">
-     <h1> Informacio de aquest activitat</h1>
 
     <button id="clic" type="submit" class="btn"></button>
 
@@ -96,6 +95,14 @@
     <script>
 
 $(document).ready(function(){
+         cridar_comentar();
+
+var divs = document.getElementsByClassName("media-body").length;
+if (divs == 0){
+  $(".media-list").prepend("<p>Sigues el primer en fer un comentari</p>");
+
+}
+    console.log(divs);
       var mymap=0;
 var marcadores=[];
 //Commentari
@@ -117,6 +124,8 @@ var marcadores=[];
                         'csrfmiddlewaretoken': '{{ csrf_token }}',// from form
                   },
                  success: function(){
+                                              $(".media-list").empty();
+
                       $("#addComment").val('');
                 $(".media").remove()
                      $.get("/comentaris?busca="+id, function(data) {
@@ -145,6 +154,8 @@ var marcadores=[];
     //comentaris
     var id= "{{ activitat.id }}";
     function cridar_comentar(){
+                         $(".media-list").empty();
+
         $.get("/comentaris?busca="+id, function(data) {
                 var c = 0;
                 console.log(data)
@@ -159,7 +170,6 @@ var marcadores=[];
                 })
             })
     }
-     cridar_comentar();
 
 //Boto insciures
     var creador= "{{ activitat.creador }}";

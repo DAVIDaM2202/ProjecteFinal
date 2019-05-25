@@ -46,6 +46,7 @@ def pantallaInici(request):
     return render(request, 'activitats/pantallaInicial.html', context)
 
 ##########################EDITAR ACTIVITAT#############################
+@login_required
 def editarActivita(request, id_activitat= None):
 
     if id_activitat:
@@ -68,6 +69,7 @@ def editarActivita(request, id_activitat= None):
     return render(request, 'activitats/editarActivitat.html', context)
 
 ########################## EDITAR PERFIL ##############
+@login_required
 def editarPerfil(request):
    persona = Persona.objects.all().filter(user=request.user)[0]
    form = editPersona(request.POST or None, initial={"nom":persona.nom,"cognom":persona.cognom,"correu":persona.correu,"nom_usuari":persona.user.username})
@@ -110,6 +112,7 @@ def registre(request):
 
 
 ######################### INSCRIURES ###############################
+@login_required
 def inscriures (request):
     personaobject= Persona.objects.get(user=request.user)
     activitatobject= Activitat.objects.get(pk= request.POST.get('activitat'))
@@ -122,6 +125,7 @@ def inscriures (request):
     return render(request,'activitats/informacioActivitats.html' )
 
 ############################################Les meves activitats###################
+@login_required
 def activitatsPropies(request):
     nom = Q(creador= str(request.user.get_username()))
     activitats = Activitat.objects.filter(nom)
@@ -131,11 +135,8 @@ def activitatsPropies(request):
     }
     return render(request, 'activitats/lesMevesActivitats.html', context)
 
-
-
-
 ######################### Activits a les que estic inscrit ###################
-
+@login_required
 def activitatsincrit(request):
 
     now = datetime.datetime.now()
@@ -153,6 +154,7 @@ def activitatsincrit(request):
 
 
 #########################################Ensenyar activitats###############################
+@login_required
 def ensenyar(request):
     if request.method == "GET":
         activitats = Activitat.objects.all()
@@ -167,6 +169,7 @@ def serializer(activitat):
     return {'id':activitat.id,'nom': activitat.nom,'descripcio': activitat.descripcio,'dia':dia,'diafinal':diafinal,'localitat':activitat.localitat.nom,'categoria': activitat.categoria.nom
         }
 ############################################Comentaris########################################
+@login_required
 def comentaris(request):
     if request.method == "GET":
         id = request.GET.get('busca')
@@ -180,7 +183,7 @@ def serializer1(comentari):
     data = str(comentari.data)
     return {'textt':comentari.text,'dataa': data,'persona': comentari.persona
         }
-
+@login_required
 def crearComentari(request):
     textrebut=  request.POST.get('text')
     activitatobject= Activitat.objects.get(pk= request.POST.get('activitat'))
@@ -191,7 +194,7 @@ def crearComentari(request):
     return render(request,'activitats/informacioActivitats.html',context )
 
 
-
+@login_required
 def apiLocalitats(request):
     nom = request.GET.get('term', '')
     pagina = int( request.GET.get('page', 0))
@@ -204,7 +207,7 @@ def apiLocalitats(request):
     response['pagination']={'more': len(lista) == maxim}
     response['results'] = lista
     return HttpResponse(json.dumps(response), content_type="application/json")
-
+@login_required
 def activitatDetallada(request, id_activitat):
     activitat=get_object_or_404(Activitat,pk=id_activitat)
     personaobject = Persona.objects.get(user=request.user)
@@ -225,13 +228,14 @@ def activitatDetallada(request, id_activitat):
     return render(request, 'activitats/informacioActivitats.html',{'activitat':activitat})
 
 #########################Eliminar ############################################
+@login_required
 def deleteActivitat(request):
     Activitat.objects.get(pk= request.POST.get('activitat')).delete()
     return HttpResponseRedirect(reverse('activitats:pantallaInici', ))
 
 
 ######################## Filtre categoria #################################
-
+@login_required
 def filtrecomentari(request):
     if request.method == "GET":
         nom = request.GET.get('busca')

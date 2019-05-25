@@ -11,10 +11,23 @@
 .ensenyar{
     display: block;
 }
-/*
-    Image credits:
-    uifaces.com (http://uifaces.com/authorized)
-*/
+html {
+    position: relative;
+    min-height: 100%;
+}
+
+.container {
+    margin-bottom: 120px;
+    width: 100%;
+}
+
+.footer {
+    position: absolute;
+    bottom: 0;
+    height: 100px;
+    width: 80%;
+    background-color: red;
+}
 
 #login { display: none; }
 .login,

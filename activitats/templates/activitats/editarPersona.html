@@ -2,12 +2,13 @@
 {% block content %}
 {% load crispy_forms_tags %}
 
+<div class=" col-sm-6 mr-auto ml-auto m-5">
 <form method="POST">
     {% csrf_token %}
     {{ form|crispy }}
     <input type="submit" class="btn btn-success">
 </form>
-
+    </div>
 
 
 {% endblock %}
