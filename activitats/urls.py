@@ -22,6 +22,9 @@ urlpatterns = [
     url(r'editarPerfil/', views.editarPerfil, name='editarPerfil'),
     url(r'activitatsincrit/', views.activitatsincrit, name='activitatsincrit'),
     url(r'filtrecategoria/', views.filtrecomentari, name='filtrecategoria'),
+    url(r'coockies/', views.coockies, name='coockies'),
+    url(r'privacitat/', views.privacitat, name='privacitat'),
+    url(r'avislegal/', views.avislegal, name='avislegal'),
 
 ]
 

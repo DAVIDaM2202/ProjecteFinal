@@ -12,6 +12,7 @@
     <script src="https://code.jquery.com/jquery-3.4.1.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.6.1/css/all.css" integrity="sha384-gfdkjb5BdAXd+lj+gudLWI+BXq4IuLW5IT+brZEZsLFm++aCMlF1V92rMkPaX4PP" crossorigin="anonymous">
 
 
 </head>
@@ -83,18 +84,81 @@
 
 <div class="container ">
 
-    <div class="footer" >
+    <div class="footer bg-dark" >
         <div class="row col-12">
-            <div class="row col-6 " >
-    asd
-</div>
+           <div class="container-fluid text-center text-md-left">
 
-            <div class="row col-6 mr-auto ml-auto">
-    asd
-</div>
+    <!-- Grid row -->
+    <div class="row">
+
+      <!-- Grid column -->
+      <div class="col-md-6 mt-md-0 mt-3">
+
+        <!-- Content -->
+        <h5 class="text-uppercase"></h5>
+        <p class="mt-5">© 2018 Copyright: http://quefer.pythonanywhere.com</p>
+
+      </div>
+      <!-- Grid column -->
+
+      <hr class="clearfix w-100 d-md-none pb-3">
+
+      <!-- Grid column -->
+      <div class="col-md-3 mb-md-0 mb-3">
+
+        <!-- Links -->
+        <h5 class="text-uppercase">Política</h5>
+
+        <ul class="list-unstyled">
+          <li>
+            <a href="{% url 'activitats:coockies' %}">Coockies</a>
+          </li>
+          <li>
+            <a href="{% url 'activitats:privacitat' %}">Privacitat</a>
+          </li>
+          <li>
+            <a href="{% url 'activitats:avislegal' %}">Avis Legal</a>
+          </li>
+
+        </ul>
+
+      </div>
+      <!-- Grid column -->
+
+      <!-- Grid column -->
+      <div class="col-md-3 mb-md-0 mb-3">
+
+        <!-- Links -->
+        <h5 class="text-uppercase">Xarxes Socials</h5>
+
+        <span class="fa-stack fa-1x">
+                <i class="fab fa-google-plus-square fa-stack-2x icones"></i>
+                </span>
+                <span class="fa-stack fa-1x">
+                <i class="fab fa-facebook-square fa-stack-2x icones"></i>
+                 </span>
+
+                <span class="fa-stack fa-1x">
+                <i class="fab fa-linkedin fa-stack-2x icones"></i>
+                </span>
+
+                <span class="fa-stack fa-1x">
+                <i class="fab fa-youtube-square fa-stack-2x icones"></i>
+                </span>
+                <span class="fa-stack fa-1x">
+                <i class="fab fa-twitter-square fa-stack-2x icones"></i>
+                 </span>
+
+            </div>
+      </div>
+      <!-- Grid column -->
+
+    </div>
+    <!-- Grid row -->
+
+  </div>
+
         </div>
-
-
 </div>
 </div>
 

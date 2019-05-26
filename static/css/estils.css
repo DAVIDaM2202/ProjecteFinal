@@ -22,11 +22,12 @@ html {
 }
 
 .footer {
+    margin-top: 20px;
     position: absolute;
     bottom: 0;
-    height: 100px;
+    height: 120px;
     width: 80%;
-    background-color: red;
+    color: whitesmoke;
 }
 
 #login { display: none; }

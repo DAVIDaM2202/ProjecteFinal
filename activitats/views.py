@@ -253,3 +253,11 @@ def serializer2(activitat):
 
     return {'id':activitat.id,'nom': activitat.nom,'descripcio': activitat.descripcio,'dia':dia,'diafinal':diafinal,'localitat':activitat.localitat.nom,'categoria': activitat.categoria.nom
         }
+
+
+def coockies(request):
+    return render(request, 'activitats/coockies.html')
+def privacitat(request):
+    return render(request, 'activitats/privacitat.html')
+def avislegal(request):
+    return render(request, 'activitats/legal.html')

@@ -12,8 +12,7 @@
 
     <div class="row col-12 mt-5">
 
-<div class="klk col-md-6">
-
+<div class="klk col-md-6 pl-5 ">
     <button id="clic" type="submit" class="btn"></button>
 
 
@@ -43,18 +42,27 @@
     </div>
   </div>
 </div>
+         <h1>{{ activitat.nom }}</h1>
 
-    <h4>Nom:  {{ activitat.nom }}</h4>
-       <h4>Descripció: {{ activitat.descripcio }}</h4>
-       <h4>Dia:  {{ activitat.dia.day }} {{ activitat.dia.month }} {{ activitat.dia.year }} {{ activitat.dia.hour }}:{{ activitat.dia.minute }}</h4>
-       <h4>Ultim dia: {{ activitat.diafinal }}</h4>
+
+                  <h4>{{ activitat.descripcio }}</h4>
+
+       <h4>Comença:  {{ activitat.dia.day }} de {{ activitat.dia.month }} del {{ activitat.dia.year }} a les {{ activitat.dia.hour }}:{{ activitat.dia.minute }}</h4>
+
+       <h4>Acaba:  {{ activitat.diafinal.day }} de {{ activitat.diafinal.month }} del {{ activitat.diafinal.year }} a les {{ activitat.diafinal.hour }}:{{ activitat.diafinal.minute }}</h4>
+
         <h4>Localitat: {{ activitat.localitat.nom }}</h4>
+
        <h4>Categoria: {{ activitat.categoria.nom }}</h4>
-      <h4>organitzador:  {{ activitat.creador }}</h4>
+
+      <h4>Organitzador:  {{ activitat.creador }}</h4>
+
+
     </div>
     <div id="mapid" class=" klk col-md-6 ">
     </div>
     </div>
+
 
    <div class="container">
   <div class="row">
@@ -65,7 +73,7 @@
                 <li class="active"><a href="#comments-logout" role="tab" id="comments" data-toggle="tab"><h4 class="reviews text-capitalize">Comentari</h4></a></li>
                 <li><a href="#add-comment" role="tab" data-toggle="tab"><h4 class="reviews text-capitalize">Nou Comentari</h4></a></li>
             </ul>
-            <div class="tab-content" style="padding-bottom: 23vh; border-color: transparent !important;">
+            <div class="tab-content" style=" border-color: transparent !important;">
                 <div class="tab-pane active" id="comments-logout">
                     <ul class="media-list">
 
@@ -95,7 +103,6 @@
     <script>
 
 $(document).ready(function(){
-         cridar_comentar();
 
 var divs = document.getElementsByClassName("media-body").length;
 if (divs == 0){
@@ -170,6 +177,8 @@ var marcadores=[];
                 })
             })
     }
+             cridar_comentar();
+
 
 //Boto insciures
     var creador= "{{ activitat.creador }}";
