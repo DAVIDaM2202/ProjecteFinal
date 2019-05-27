@@ -25,7 +25,7 @@ SECRET_KEY = 'gis)vx27*-lew(#=o3x(gprjevk-8fg)4!02l_odb-e2_ag#ml'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['*']
 
 
 # Application definition
@@ -84,6 +84,16 @@ DATABASES = {
         'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
     }
 }
+'''DATABASES = {
+    'default': {
+        'ENGINE': 'django.db.backends.mysql',
+        'NAME': 'quefer$default',
+        'USER': 'quefer',
+        'PASSWORD':'david22.com',
+        'HOST':'quefer.mysql.pythonanywhere-services.com',
+        'PORT':'3306',
+    }
+}'''
 
 
 # Password validation

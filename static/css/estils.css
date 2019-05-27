@@ -25,9 +25,10 @@ html {
     margin-top: 20px;
     position: absolute;
     bottom: 0;
-    height: 120px;
-    width: 80%;
+    min-height: 120px;
+    width: 100%;
     color: whitesmoke;
+    left: 0;
 }
 
 #login { display: none; }

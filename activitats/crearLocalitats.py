@@ -1,16 +1,7 @@
 from activitats.models import Localitat
 
 json = [
- {
-   "Poblacion": "Agullana",
-   "Latitud": "42,39483",
-   "Longitud": "2,845378"
- },
- {
-   "Poblacion": "Aiguaviva",
-   "Latitud": "41,9372",
-   "Longitud": "2,760639"
- },
+
  {
    "Poblacion": "Albanya",
    "Latitud": "42,30573",
