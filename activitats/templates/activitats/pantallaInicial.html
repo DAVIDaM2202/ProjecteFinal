@@ -10,104 +10,103 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/js/bootstrap.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datetimepicker/4.17.47/js/bootstrap-datetimepicker.min.js"></script>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datetimepicker/4.17.47/css/bootstrap-datetimepicker.min.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css">
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.6-rc.0/js/select2.min.js"></script>
 <link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.6-rc.0/css/select2.min.css" rel="stylesheet" />
 
-
-    <div class="row col-12">
+<div class="row col-12">
     <div class="col-6 pl-5">
         <div class="pl-5">
-                        <h1>Benvingut {{ user.get_username}}</h1>
+            <h1>Benvingut {{ user.get_username}}</h1>
 
         </div>
-      <div class="pl-5">
+        <div class="pl-5">
             <a id="filtre" type="btn btn-danger" class="btn btn-info align-middle ">Filtres de Busqueda</a>
-    </div>
+        </div>
     </div>
     <div class="col-6 justify-content-end d-flex" style="align-self: center">
-            <button id="nova" type="button" class="btn btn-success align-middle " data-toggle="modal" data-target="#exampleModal">
-                Crear Activitat</button>
+        <button id="nova" type="button" class="btn btn-success align-middle " data-toggle="modal" data-target="#exampleModal">
+            Crear Activitat</button>
     </div>
 
-
-    </div>
-
-      <div id="divfiltres" class="row col-12 mt-5 amagar pl-5">
-      <div class="pl-5">
-   <div class="col-xs-12 col-md-3">
-   <div class="form-group">
-  <label for="sel1">Activitat</label>
-  <select class="form-control" id="sel1">
-          <option>Buscar...</option>
-    <option>Aventura</option>
-    <option>Oci</option>
-    <option>Ludica</option>
-    <option>Cinematogràfiqua</option>
-    <option>Cultural</option>
-
-  </select>
 </div>
-    </div>
-             <div class="col-3">
+
+<div id="divfiltres" class="row col-12 mt-5 amagar pl-5">
+    <div class="pl-5">
+        <div class="col-3">
+            <!--   <div class="col-xs-12 col-md-3">-->
+            <div class="form-group">
+                <label for="sel1">Activitat</label>
+                <select class="form-control" id="sel1">
+                    <option>Totes</option>
+                    <option>Aventura</option>
+                    <option>Oci</option>
+                    <option>Ludica</option>
+                    <option>Cinematogràfiqua</option>
+                    <option>Cultural</option>
+
+                </select>
+            </div>
+        </div>
+        <div class="col-3">
             <button id="aplicarfiltre" type="button" class="btn btn-success align-middle ">Aplicar</button>
 
-</div>
-      </div>
-
+        </div>
     </div>
 
-    <!-- Modal -->
+</div>
 
-    {% for error in form.non_field_errors %}
-    <div class="alert alert-block alert-danger"> {{ error }}</div>
+<!-- Modal -->
+
+{% for error in form.non_field_errors %}
+<div class="alert alert-block alert-danger"> {{ error }}</div>
 {% endfor %}
 
-    <!-- Material unchecked -->
+<!-- Material unchecked -->
 
-    <div class="modal fade" id="exampleModal" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-        <div class="modal-dialog" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title " id="exampleModalLabel">Crear una Activitat</h5>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-                </div>
+<div class="modal fade" id="exampleModal" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title " id="exampleModalLabel">Crear una Activitat</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
 
-                <div class="modal-body">
-                    <form method="POST">
-                        {% csrf_token %} {{ form|crispy }}
-                        <input type="submit" class="btn btn-success">
-                    </form>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                </div>
+            <div class="modal-body">
+                <form method="POST">
+                    {% csrf_token %} {{ form|crispy }}
+                    <input type="submit" class="btn btn-success">
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
             </div>
         </div>
     </div>
+</div>
 
-    <div class=" row general col-12">
-    </div>
-
+<div class=" row general col-12">
+</div>
     <script>
-        $(document).ready(function() {
-            ensenyar();
-//Filtre
-            $("#filtre").on('click',function(){
-                 var formulari = document.getElementById( "divfiltres" );
-	        formulari.className = (formulari.className=="row col-12 mt-5 amagar pl-5")?"row col-12 mt-5 ensenyar pl-5":"row col-12 mt-5 amagar pl-5";
-
-            });
-                var text=$("#sel1").val();
+$(document).ready(function() {
+    //Cridem a la consulta ajax per que ens agafi totes les activitats
+    ensenyar();
+//Filtre, si clica el filtre mostrem un nou desplegable, juguem amb les clases amagar i ensenyar, amb el display none, i disply block
+$("#filtre").on('click',function(){
+    var formulari = document.getElementById( "divfiltres" );
+    formulari.className = (formulari.className=="row col-12 mt-5 amagar pl-5")?"row col-12 mt-5 ensenyar pl-5":"row col-12 mt-5 amagar pl-5";
+});
+//Agafem el text del camp, si al moment de aplicar els filtres el camp es tot, mostrearem tots els filtres
+var text=$("#sel1").val();
   $("#aplicarfiltre").on('click',function(){
     var text=$("#sel1").val();
     if (text !== 'Totes'){
     filtreCategories(text)
     }else {
-        ensenyar();
+     ensenyar();
     }
   });
   function filtreCategories(text){
@@ -117,9 +116,6 @@
              if (data.length >0){
                  var c = 0;
                  $(".general").empty();
-
-                console.log(data)
-
                 $.each(data, function(index, element) {
 
                     $(".general").prepend("<div class=' card col-sm-5 mr-auto ml-auto m-5 segon" + c + "'>");
@@ -128,7 +124,6 @@
                     $(".tercer" + c).prepend("<p class='card-text'>" + element.descripcio + "</p>");
                     $(".tercer" + c).prepend("<h5 class='card-title '>" + element.nom + "</h5>");
                     $(".segon" + c).prepend("<h5 class='card-header bg-light text-dark'>" + element.categoria);
-
                     c++;
                 })
              }else {
@@ -143,28 +138,24 @@
   }
 
 function ensenyar(){
-                 $(".general").empty();
-
-                //Ensenyar
-            $(document).off('focusin.modal');
-
-            $.get("/ensenyar", function(data) {
-                var c = 0;
-                console.log(data)
-
-                $.each(data, function(index, element) {
-                    $(".general").prepend("<div class=' card col-sm-5 mr-auto ml-auto m-5 segon" + c + "'>");
-                    $(".segon" + c).prepend("<div class='card-body tercer" + c + "'>");
-                    $(".tercer" + c).prepend("<a href='/activitatDetallada/" + element.id + "' class='btn btn-primary'>Més informació</a>");
-                    $(".tercer" + c).prepend("<p class='card-text '>" + element.descripcio + "</p>");
-                    $(".tercer" + c).prepend("<h5 class='card-title '>" + element.nom + "</h5>");
-                    $(".segon" + c).prepend("<h5 class='card-header bg-light text-dark'>" + element.categoria+"</h5>");
-
-                    c++;
-                })
-            })
-    }
-
+      //Netejem les activitats anteriors, utlitzem la variable c, per el tema que no es repeteixin les clases
+      $(".general").empty();
+      $(document).off('focusin.modal');
+      $.get("/ensenyar", function(data) {
+          var c = 0;
+          $.each(data, function(index, element) {
+              $(".general").prepend("<div class=' card col-sm-5 mr-auto ml-auto m-5 segon" + c + "'>");
+              $(".segon" + c).prepend("<div class='card-body tercer" + c + "'>");
+              $(".tercer" + c).prepend("<a href='/activitatDetallada/" + element.id + "' class='btn btn-primary'>Més informació</a>");
+              $(".tercer" + c).prepend("<p class='card-text '>" + element.descripcio + "</p>");
+              $(".tercer" + c).prepend("<h5 class='card-title '>" + element.nom + "</h5>");
+              $(".segon" + c).prepend("<h5 class='card-header bg-light text-dark'>" + element.categoria+"</h5>");
+              c++;
+          })
+      })
+  }
+//Tenim aquestes dos funcions que el que fan es carregar el select2, el que fem es cridar a una api, que ens retorna ja siguin les localitats
+// Les categories al ser poques no fa falta fer una peticio per recopilar poques categories.
             $('.localitat').select2({
             ajax: {
                 url: function(params) {

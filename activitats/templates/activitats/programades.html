@@ -1,8 +1,17 @@
 {% extends 'base.html' %}
 {% block perfil %}{% url 'activitats:editarPerfil' %}{% endblock %}
 {% block quefer %}{% url 'activitats:pantallaInici'%}{% endblock %}{% block content %}
-            <h1> Les meves activitats</h1>
+  <div class="row col-12 pt-5">
+    <div class="col-6 pl-5">
+        <div class="pl-5">
+                        <h1>Les meves activitat</h1>
 
+        </div>
+
+    </div>
+
+
+    </div>
     <div class="row col-12 ">
 
     {% if activtats %}
@@ -18,7 +27,17 @@
       </div>
     {% endfor %}
     {% else %}
+          <div class="row col-12">
+    <div class="col-6 pl-5">
+        <div class="pl-5">
     <p>Encara no t'has inscrit a cap activitat</p>
+
+        </div>
+
+    </div>
+
+
+    </div>
     {% endif %}
     </div>
 {% endblock %}

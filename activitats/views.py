@@ -186,12 +186,18 @@ def serializer1(comentari):
 @login_required
 def crearComentari(request):
     textrebut=  request.POST.get('text')
-    activitatobject= Activitat.objects.get(pk= request.POST.get('activitat'))
-    x = Comentari.objects.create(text=textrebut,persona=request.user,id_activitat=activitatobject)
+    if (textrebut != ""):
+        activitatobject = Activitat.objects.get(pk=request.POST.get('activitat'))
+        x = Comentari.objects.create(text=textrebut, persona=request.user, id_activitat=activitatobject)
+        context = {
+            "activitat": activitatobject,
+        }
+        return render(request, 'activitats/informacioActivitats.html', context)
+    activitatobject = Activitat.objects.get(pk=request.POST.get('activitat'))
     context = {
         "activitat": activitatobject,
     }
-    return render(request,'activitats/informacioActivitats.html',context )
+    return render(request, 'activitats/informacioActivitats.html', context)
 
 
 @login_required
