@@ -102,16 +102,16 @@
     <script>
 
 $(document).ready(function(){
-//Comprobem si hi han comentaris, en el cas que no hi hagin afegim un comentari.
-var divs = document.getElementsByClassName("media-body").length;
+//Comprovem si hi ha comentaris, en el cas que no hi hagi afegim un comentari.
+ var divs = document.getElementsByClassName("media-body").length;
 if (divs == 0){
   $(".media-list").prepend("<p id='primer'>Sigues el primer en fer un comentari</p>");
 
 }
 /*Comentaris*/
-//La següent funció es la que sencarrega de afegir els comentaris, el que fa amb ajax, enviem a una urls del servidor les dades.
-    //Despres si ha sorit be la petció, afegim els comentaris anteriors i el nou.
-    //En els servidor ens encarreguem que si reb un comentari vuit de no crear-lo
+//La següent funció és la que s'encarrega d'afegir els comentaris, el que fa amb ajax, enviem a una urls del servidor les dades.
+//Després si ha sortit bé la petició, afegim els comentaris anteriors i el nou.
+//En el servidor ens encarreguem que si rep un comentari vuit de no crear-lo
 $("#submitComment").on('click',function(){
     $( "#comments" ).trigger( "click" );
     var text = $("#addComment").val();
@@ -126,14 +126,14 @@ $("#submitComment").on('click',function(){
             'csrfmiddlewaretoken': '{{ csrf_token }}',
         },
         success: function(){
-            //Fiquem el camp comentari vuit i elminem els comentaris antics
+            //Fiquem el camp comentari vuit i eliminem els comentaris antics
             $("#addComment").val('');
             $(".media").remove();
             cridar_comentar();
         }
     });
 });
-//Quan carrguem la pagina carreguem tots els comentaris
+//Quan carrguem la paginà carreguem tots els comentaris
 var id= "{{ activitat.id }}";
 function cridar_comentar(){
     $.get("/comentaris?busca="+id, function(data) {
@@ -158,8 +158,8 @@ function cridar_comentar(){
 cridar_comentar();
 
 /*Inscriures*/
-    //En aquest punt, juguem amb qui mira la activitat si es el creador afgirem els botons de eliminar i editar, en cas contrari nomes veure.
-    //Canviarem el color i el tex de insciures si ja esta inscrit o no.
+   //En aquest punt, juguem amb qui mira l'activitat si és el creador, afegirem els botons d'eliminar i editar, en cas contrari només veure.
+//Canviarem el color i el text d'inscriure's si ja està inscrit o no.
 var creador= "{{ activitat.creador }}";
 var userlogin= "{{ user.get_username }}";
 if (creador !== userlogin){
@@ -170,16 +170,16 @@ if (creador !== userlogin){
         $("#clic").text('Desinscriuret')
         $("#clic").addClass('btn-danger')
     }else {
-        $("#clic").text('Insciu-te')
+        $("#clic").text('Inscriu-te')
         $("#clic").addClass('btn-success')
     }
     $("#clic").on('click',function(){
         var carta = document.getElementById( "clic" );
 	    carta.className = (carta.className=="btn btn-success")?"btn btn-success btn btn-danger":"btn btn-success";
         if ($('#clic').html() == 'Insciu-te') {
-            $("#clic").text('Desincriures');
+            $("#clic").text("Desinscriuret");
         }else {
-            $("#clic").text('Insciu-te');
+            $("#clic").text('Inscriu-te');
         }
         $.ajax({
         // headers: { "X-CSRFToken": getCookie("csrftoken") },
@@ -196,7 +196,7 @@ if (creador !== userlogin){
         });
     });
 }
-//En el cas que sigui el creador deixarem que elimini i creei la activitat
+//En el cas que sigui el creador deixarem que elimini i creÍ l'Activitat
     if (creador == userlogin){
         $("#clic").remove();
         $("#eliminar").text('Eliminar')
@@ -236,4 +236,4 @@ var marcadores=[];
     marcadores.push(L.marker([x, y]).addTo(mymap));
 })
 </script>
-{% endblock %}t>
+{% endblock %}

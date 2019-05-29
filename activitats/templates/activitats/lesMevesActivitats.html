@@ -2,13 +2,20 @@
 {% block perfil %}{% url 'activitats:editarPerfil' %}{% endblock %}
 {% block quefer %}{% url 'activitats:pantallaInici'%}{% endblock %}{% block content %}
 
-        <div class="row col-12 pl-5 mt-5">
-    <div class="col-6 ">
-         <h1> Les meves activitats</h1>
+          <div class="row col-12 pt-5">
+    <div class="col-6 pl-5">
+        <div class="pl-5">
+                        <h1>Les meves activitats</h1>
+
+        </div>
 
     </div>
+
+
     </div>
     <div class="row col-12">
+        {% if activtats %}
+
     {% for activitat in activtats %}
       <div class=" card col-sm-5 mr-auto ml-auto m-5 segon2">
           <h5 class="card-header">{{ activitat.categoria }}</h5>
@@ -19,6 +26,18 @@
 
           </div>
       </div>
-    {% endfor %}
+           {% endfor %}
+    {% else %}
+     <div class="row col-12">
+    <div class="col-6 pl-5">
+        <div class="pl-5">
+    <p>Encara no has creat cap activitat</p>
+             </div>
+
+    </div>
+
+
+    </div>
+    {% endif %}
     </div>
 {% endblock %}

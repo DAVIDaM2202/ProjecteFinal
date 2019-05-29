@@ -21,7 +21,6 @@ def index(request):
 @login_required
 def pantallaInici(request):
     x = datetime.datetime.now()##############################aqui
-    print x
     form = formActivitats(request.POST or None)
     x = Persona.objects.get(user=request.user)
     if request.method == 'POST':
@@ -140,11 +139,9 @@ def activitatsPropies(request):
 def activitatsincrit(request):
 
     now = datetime.datetime.now()
-    print now
     personaobject= Persona.objects.get(user=request.user)
     activitats = activitat_persones_inscrites.objects.filter(persona= personaobject,assistira='1')
-    for x in activitats:
-        print x.activitat.nom
+
     context = {
         "activtats": activitats,
     }
@@ -247,7 +244,6 @@ def filtrecomentari(request):
         nom = request.GET.get('busca')
         activitats = Activitat.objects.all().filter(categoria__nom=nom)#porbart categoria__nom
         llista = [serializer2(activitat) for activitat in activitats]
-        print llista
         return HttpResponse(json.dumps(llista), content_type='aplication/json')
     HttpResponseRedirect(reverse('Index'))
 

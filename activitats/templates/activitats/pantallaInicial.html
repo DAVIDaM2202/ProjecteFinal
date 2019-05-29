@@ -41,11 +41,11 @@
                 <select class="form-control" id="sel1">
                     <option>Totes</option>
                     <option>Aventura</option>
+                    <option>Excurcions</option>
                     <option>Oci</option>
                     <option>Ludica</option>
-                    <option>Cinematogràfiqua</option>
+                    <option>Cinema</option>
                     <option>Cultural</option>
-
                 </select>
             </div>
         </div>
@@ -92,14 +92,14 @@
 </div>
     <script>
 $(document).ready(function() {
-    //Cridem a la consulta ajax per que ens agafi totes les activitats
+    //Cridem a la consulta ajax per perquè  agafi totes les activitats
     ensenyar();
 //Filtre, si clica el filtre mostrem un nou desplegable, juguem amb les clases amagar i ensenyar, amb el display none, i disply block
 $("#filtre").on('click',function(){
     var formulari = document.getElementById( "divfiltres" );
     formulari.className = (formulari.className=="row col-12 mt-5 amagar pl-5")?"row col-12 mt-5 ensenyar pl-5":"row col-12 mt-5 amagar pl-5";
 });
-//Agafem el text del camp, si al moment de aplicar els filtres el camp es tot, mostrearem tots els filtres
+//Agafem el text del camp, si al moment d'aplicar els filtres el camp és tot, mostrarem tots els filtres
 var text=$("#sel1").val();
   $("#aplicarfiltre").on('click',function(){
     var text=$("#sel1").val();
@@ -109,37 +109,34 @@ var text=$("#sel1").val();
      ensenyar();
     }
   });
-  function filtreCategories(text){
+  function filtreCategories(text) {
       console.log(text)
-         $.get("/filtrecategoria?busca="+text, function(data) {
-             console.log(data.length)
-             if (data.length >0){
-                 var c = 0;
-                 $(".general").empty();
-                $.each(data, function(index, element) {
+      $.get("/filtrecategoria?busca=" + text, function (data) {
+          console.log(data.length)
+          if (data.length > 0) {
+              var c = 0;
+              $(".general").empty();
+              $.each(data, function (index, element) {
+                  $(".general").prepend("<div class=' card col-sm-5 mr-auto ml-auto m-5 segon" + c + "'>");
+                  $(".segon" + c).prepend("<div class='card-body tercer" + c + "'>");
+                  $(".tercer" + c).prepend("<a href='/activitatDetallada/" + element.id + "' class='btn btn-primary'>Més informació</a>");
+                  $(".tercer" + c).prepend("<p class='card-text'>" + element.descripcio + "</p>");
+                  $(".tercer" + c).prepend("<h5 class='card-title '>" + element.nom + "</h5>");
+                  $(".segon" + c).prepend("<h5 class='card-header bg-light text-dark negre'>" + element.categoria);
+                  c++;
+              })
+          } else {
+              $(".general").empty();
+              $(".general").prepend("<div class=' col-sm-5 mr-auto ml-auto m-5 segon'>");
 
-                    $(".general").prepend("<div class=' card col-sm-5 mr-auto ml-auto m-5 segon" + c + "'>");
-                    $(".segon" + c).prepend("<div class='card-body tercer" + c + "'>");
-                    $(".tercer" + c).prepend("<a href='/activitatDetallada/" + element.id + "' class='btn btn-primary'>Més informació</a>");
-                    $(".tercer" + c).prepend("<p class='card-text'>" + element.descripcio + "</p>");
-                    $(".tercer" + c).prepend("<h5 class='card-title '>" + element.nom + "</h5>");
-                    $(".segon" + c).prepend("<h5 class='card-header bg-light text-dark'>" + element.categoria);
-                    c++;
-                })
-             }else {
-                 $(".general").empty();
-                 $(".general").prepend("<div class=' col-sm-5 mr-auto ml-auto m-5 segon'>");
-
-                 $(".segon").prepend(" <div class='alert alert-block alert-danger'> Cap categoria</div>");
-
-             }
-
-            })
+              $(".segon").prepend(" <div class='alert alert-block alert-danger'> Cap categoria</div>");
+          }
+      })
   }
 
 function ensenyar(){
-      //Netejem les activitats anteriors, utlitzem la variable c, per el tema que no es repeteixin les clases
-      $(".general").empty();
+//netegem les activitats anteriors, utilitzem la variable c, pel tema que no es repeteixin les clases
+     $(".general").empty();
       $(document).off('focusin.modal');
       $.get("/ensenyar", function(data) {
           var c = 0;
@@ -149,13 +146,13 @@ function ensenyar(){
               $(".tercer" + c).prepend("<a href='/activitatDetallada/" + element.id + "' class='btn btn-primary'>Més informació</a>");
               $(".tercer" + c).prepend("<p class='card-text '>" + element.descripcio + "</p>");
               $(".tercer" + c).prepend("<h5 class='card-title '>" + element.nom + "</h5>");
-              $(".segon" + c).prepend("<h5 class='card-header bg-light text-dark'>" + element.categoria+"</h5>");
+              $(".segon" + c).prepend("<h5 class='card-header bg-light text-dark negre'>" + element.categoria+"</h5>");
               c++;
           })
       })
   }
-//Tenim aquestes dos funcions que el que fan es carregar el select2, el que fem es cridar a una api, que ens retorna ja siguin les localitats
-// Les categories al ser poques no fa falta fer una peticio per recopilar poques categories.
+//Tenim aquestes dues funcions que el que fan és carregar el select2, el que fem és cridar a una api, que ens retorna ja siguin les localitats
+// Les categories al ser poques no fa falta fer una petició per recopilar poques categories.
             $('.localitat').select2({
             ajax: {
                 url: function(params) {

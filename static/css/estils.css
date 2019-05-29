@@ -11,6 +11,9 @@
 .ensenyar{
     display: block;
 }
+.negre{
+    font-weight: bold;
+}
 html {
     position: relative;
     min-height: 100%;
