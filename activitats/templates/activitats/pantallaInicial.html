@@ -88,7 +88,7 @@
     </div>
 </div>
 
-<div class=" row general col-12">
+<div class=" row general col-12 justfy-content-around" style="min-height: 80vh">
 </div>
     <script>
 $(document).ready(function() {
@@ -117,7 +117,7 @@ var text=$("#sel1").val();
               var c = 0;
               $(".general").empty();
               $.each(data, function (index, element) {
-                  $(".general").prepend("<div class=' card col-sm-5 mr-auto ml-auto m-5 segon" + c + "'>");
+                  $(".general").prepend("<div class=' card col-11 col-sm-5 mr-auto ml-auto m-5 segon" + c + "'>");
                   $(".segon" + c).prepend("<div class='card-body tercer" + c + "'>");
                   $(".tercer" + c).prepend("<a href='/activitatDetallada/" + element.id + "' class='btn btn-primary'>Més informació</a>");
                   $(".tercer" + c).prepend("<p class='card-text'>" + element.descripcio + "</p>");
@@ -141,7 +141,7 @@ function ensenyar(){
       $.get("/ensenyar", function(data) {
           var c = 0;
           $.each(data, function(index, element) {
-              $(".general").prepend("<div class=' card col-sm-5 mr-auto ml-auto m-5 segon" + c + "'>");
+              $(".general").prepend("<div class=' card col-11 col-sm-5 mr-auto ml-auto m-5 segon" + c + "'>");
               $(".segon" + c).prepend("<div class='card-body tercer" + c + "'>");
               $(".tercer" + c).prepend("<a href='/activitatDetallada/" + element.id + "' class='btn btn-primary'>Més informació</a>");
               $(".tercer" + c).prepend("<p class='card-text '>" + element.descripcio + "</p>");

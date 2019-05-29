@@ -3,6 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <title>Quefer</title>
+    <link href="https://fonts.googleapis.com/css?family=Merriweather&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Dosis&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
 
     <!-- Bootstrap core CSS -->
@@ -83,7 +85,7 @@
  {% block content %}
  {% endblock %}
 
-<div class="container ">
+<div>
 
     <div class="footer bg-dark" >
         <div class="row col-12">
@@ -112,13 +114,13 @@
 
         <ul class="list-unstyled">
           <li>
-            <a href="{% url 'activitats:coockies' %}">Coockies</a>
+            <a href="{% url 'activitats:coockies' %}" style="color: white">Coockies</a>
           </li>
           <li>
-            <a href="{% url 'activitats:privacitat' %}">Privacitat</a>
+            <a href="{% url 'activitats:privacitat' %}" style="color: white">Privacitat</a>
           </li>
           <li>
-            <a href="{% url 'activitats:avislegal' %}">Avis Legal</a>
+            <a href="{% url 'activitats:avislegal' %}" style="color: white">Avis Legal</a>
           </li>
 
         </ul>

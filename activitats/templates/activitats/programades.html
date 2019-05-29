@@ -12,11 +12,11 @@
 
 
     </div>
-    <div class="row col-12 ">
+    <div class="row col-12 justfy-content-around" style="min-height: 70vh">
 
     {% if activtats %}
     {% for activitat in activtats %}
-      <div class=" card col-sm-5 mr-auto ml-auto m-5 segon2">
+      <div class=" card col-11 col-sm-5 mr-auto ml-auto m-5 segon2">
           <h5 class="card-header">{{ activitat.activitat.categoria }}</h5>
           <div class="card-body tercer2">
               <h5 class="card-title">{{ activitat.activitat.nom }}</h5>
